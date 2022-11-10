@@ -15,7 +15,8 @@ AMovingPlatform::AMovingPlatform()
 void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	StartLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -23,5 +24,22 @@ void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+  // Move platform forwards
+  FVector CurrentLocation = GetActorLocation();
+
+  CurrentLocation += PlatformVelocity * DeltaTime;
+
+  SetActorLocation(CurrentLocation);
+
+  // Reverse moving direction
+  float DistanceMoved = FVector::Distance(StartLocation, CurrentLocation);
+
+  if (DistanceMoved > MoveDistance)
+  {
+    FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+    StartLocation += (MoveDirection * MoveDistance);
+    SetActorLocation(StartLocation);
+    PlatformVelocity = -PlatformVelocity;
+  }
 }
 
