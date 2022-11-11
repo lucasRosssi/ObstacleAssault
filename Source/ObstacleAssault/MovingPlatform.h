@@ -30,5 +30,4 @@ public:
 
   FVector StartLocation;
 
-
 };
