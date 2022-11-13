@@ -31,12 +31,15 @@ private:
   float MoveDistance = 300.f;
   UPROPERTY(EditAnywhere, Category="Rotation")
   FRotator RotationVelocity;
+  UPROPERTY(EditAnywhere, Category="Movement")
+  bool ChangesDirection = false;
 
   FVector StartLocation;
 
   void MovePlatform(float DeltaTime);
   void RotatePlatform(float DeltaTime);
   bool ShouldPlatformReturn() const;
+  bool ShouldChangeDirection() const;
   float GetDistanceMoved() const;
 
 };

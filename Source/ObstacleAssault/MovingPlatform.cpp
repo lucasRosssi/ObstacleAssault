@@ -46,6 +46,14 @@ void AMovingPlatform::MovePlatform(float DeltaTime)
     CurrentLocation += PlatformVelocity * DeltaTime;
     SetActorLocation(CurrentLocation);
   }
+
+  if (ShouldChangeDirection())
+  {
+    FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+    StartLocation += (MoveDirection * MoveDistance);
+    SetActorLocation(StartLocation);
+    PlatformVelocity = PlatformVelocity.RotateAngleAxis(90, MoveDirection.ZAxisVector);
+  }
 }
 
 void AMovingPlatform::RotatePlatform(float DeltaTime)
@@ -56,6 +64,11 @@ void AMovingPlatform::RotatePlatform(float DeltaTime)
 bool AMovingPlatform::ShouldPlatformReturn() const
 {
   return GetDistanceMoved() > MoveDistance;
+}
+
+bool AMovingPlatform::ShouldChangeDirection() const
+{
+  return ChangesDirection && ShouldPlatformReturn();
 }
 
 float AMovingPlatform::GetDistanceMoved() const
